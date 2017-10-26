@@ -1,0 +1,47 @@
+package com.github.dekoservidoni.androidarc.datamodels
+
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MutableLiveData
+import com.github.dekoservidoni.androidarc.datamodels.models.Drink
+import com.github.dekoservidoni.androidarc.datamodels.models.Resource
+import com.github.dekoservidoni.androidarc.datamodels.models.ResponseDrink
+import com.github.dekoservidoni.androidarc.datamodels.network.NetworkClient
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import javax.inject.Inject
+
+
+class RepositoryDataModel @Inject constructor() {
+
+    private var data = MutableLiveData<Resource<ResponseDrink>>()
+
+    fun getData(): LiveData<Resource<ResponseDrink>> {
+        return data
+    }
+
+    fun getDataFromAPI(term: String) {
+        Resource.loading<List<Drink>>()
+
+        NetworkClient.getServices()?.searchDrinks(term)?.enqueue(object : Callback<ResponseDrink> {
+            override fun onResponse(call: Call<ResponseDrink>, response: Response<ResponseDrink>) {
+                val callResponse = response.body()
+
+                if(callResponse?.drinks == null
+                        || callResponse.drinks.isEmpty()) {
+                    data.value = Resource.error("Your search returned no results! :(", null)
+                } else {
+                    data.value = Resource.success(callResponse)
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseDrink>, t: Throwable) {
+                data.value = Resource.error<ResponseDrink>(t.localizedMessage, null)
+            }
+        })
+    }
+
+    fun getDataFromDatabase() {
+        //TODO: Implement with ROOM
+    }
+}
