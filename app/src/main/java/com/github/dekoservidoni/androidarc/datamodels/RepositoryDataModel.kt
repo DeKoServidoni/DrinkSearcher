@@ -14,13 +14,9 @@ import javax.inject.Inject
 
 class RepositoryDataModel @Inject constructor() {
 
-    private var data = MutableLiveData<Resource<ResponseDrink>>()
+    fun getDataFromAPI(term: String): LiveData<Resource<ResponseDrink>> {
+        val data = MutableLiveData<Resource<ResponseDrink>>()
 
-    fun getData(): LiveData<Resource<ResponseDrink>> {
-        return data
-    }
-
-    fun getDataFromAPI(term: String) {
         Resource.loading<List<Drink>>()
 
         NetworkClient.getServices()?.searchDrinks(term)?.enqueue(object : Callback<ResponseDrink> {
@@ -39,6 +35,8 @@ class RepositoryDataModel @Inject constructor() {
                 data.value = Resource.error<ResponseDrink>(t.localizedMessage, null)
             }
         })
+
+        return data
     }
 
     fun getDataFromDatabase() {

@@ -1,5 +1,6 @@
 package com.github.dekoservidoni.androidarc.view.fragments
 
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
@@ -17,13 +18,14 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import com.github.dekoservidoni.androidarc.R
 import com.github.dekoservidoni.androidarc.databinding.FragmentSearchBinding
+import com.github.dekoservidoni.androidarc.datamodels.models.Drink
 import com.github.dekoservidoni.androidarc.view.adapters.SearchAdapter
 import com.github.dekoservidoni.androidarc.viewmodels.DrinkViewModel
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
 
-class SearchFragment : Fragment(), TextView.OnEditorActionListener  {
+class SearchFragment : Fragment(), TextView.OnEditorActionListener, Observer<List<Drink>>  {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -47,25 +49,16 @@ class SearchFragment : Fragment(), TextView.OnEditorActionListener  {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         fragmentSearchBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_search, container, false)
-
-        fragmentSearchBinding.searchResults.addItemDecoration(dividerItemDecoration)
-        fragmentSearchBinding.searchResults.layoutManager = LinearLayoutManager(context)
-        fragmentSearchBinding.searchResults.adapter = searchAdapter
-        fragmentSearchBinding.searchInput.setOnEditorActionListener(this)
-
         fragmentSearchBinding.viewModel = drinkViewModel
+
+        setupUI()
 
         return fragmentSearchBinding.root
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        lifecycle.addObserver(drinkViewModel)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        lifecycle.removeObserver(drinkViewModel)
+        drinkViewModel.getData().observe(this, this)
     }
 
     override fun onEditorAction(textInput: TextView?, actionId: Int, p2: KeyEvent?): Boolean {
@@ -76,7 +69,20 @@ class SearchFragment : Fragment(), TextView.OnEditorActionListener  {
         return true
     }
 
+    override fun onChanged(newContent: List<Drink>?) {
+        newContent?.let {
+            searchAdapter.updateContent(it)
+        }
+    }
+
     /// Private methods
+
+    private fun setupUI() {
+        fragmentSearchBinding.searchResults.addItemDecoration(dividerItemDecoration)
+        fragmentSearchBinding.searchResults.layoutManager = LinearLayoutManager(context)
+        fragmentSearchBinding.searchResults.adapter = searchAdapter
+        fragmentSearchBinding.searchInput.setOnEditorActionListener(this)
+    }
 
     private fun dismissKeyboard() {
         val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager

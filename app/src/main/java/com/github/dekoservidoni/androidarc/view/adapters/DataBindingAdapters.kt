@@ -1,10 +1,8 @@
 package com.github.dekoservidoni.androidarc.view.adapters
 
 import android.databinding.BindingAdapter
-import android.support.v7.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.github.dekoservidoni.androidarc.datamodels.models.Drink
 import de.hdodenhof.circleimageview.CircleImageView
 
 object DataBindingAdapters {
@@ -16,19 +14,5 @@ object DataBindingAdapters {
                 .load(url)
                 .apply(RequestOptions.centerInsideTransform())
                 .into(imageView)
-    }
-
-    @JvmStatic
-    @BindingAdapter("search_list")
-    fun setSearchList(recyclerView: RecyclerView, newContent: List<Drink>) {
-        val adapter = recyclerView.adapter as SearchAdapter
-        adapter.updateContent(newContent)
-    }
-
-    @JvmStatic
-    @BindingAdapter("favorite_list")
-    fun setFavoriteList(recyclerView: RecyclerView, newContent: List<Drink>) {
-        val adapter = recyclerView.adapter as FavoriteAdapter
-        adapter.updateContent(newContent)
     }
 }
