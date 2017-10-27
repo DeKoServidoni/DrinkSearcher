@@ -18,7 +18,7 @@ import android.widget.TextView
 import com.github.dekoservidoni.androidarc.R
 import com.github.dekoservidoni.androidarc.databinding.FragmentSearchBinding
 import com.github.dekoservidoni.androidarc.view.adapters.SearchAdapter
-import com.github.dekoservidoni.androidarc.viewmodels.DrinkViewModel
+import com.github.dekoservidoni.androidarc.viewmodels.SearchViewModel
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
@@ -30,7 +30,7 @@ class SearchFragment : Fragment(), TextView.OnEditorActionListener  {
 
     private val dividerItemDecoration by lazy { DividerItemDecoration(context, LinearLayoutManager.HORIZONTAL) }
     private val searchResultsAdapter by lazy { SearchAdapter() }
-    private val drinkViewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(DrinkViewModel::class.java) }
+    private val drinkViewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(SearchViewModel::class.java) }
 
     private lateinit var fragmentSearchBinding: FragmentSearchBinding
 

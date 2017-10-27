@@ -2,19 +2,14 @@ package com.github.dekoservidoni.androidarc.view.adapters.viewholders
 
 import android.support.v7.widget.RecyclerView
 import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
-import com.github.dekoservidoni.androidarc.R
+import com.github.dekoservidoni.androidarc.databinding.RowSearchBinding
+import com.github.dekoservidoni.androidarc.viewmodels.SearchRowViewModel
 
 
-class SearchViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+class SearchViewHolder(view: View, private var binding: RowSearchBinding) : RecyclerView.ViewHolder(view) {
 
-    var drinkName: TextView? = null
-    var drinkImage: ImageView? = null
-
-    init {
-        drinkName = view.findViewById(R.id.drink_label)
-        drinkImage = view.findViewById(R.id.drink_image)
+    fun bindingContent(searchRowViewModel: SearchRowViewModel) {
+        binding.viewModel = searchRowViewModel
+        binding.executePendingBindings()
     }
-
 }

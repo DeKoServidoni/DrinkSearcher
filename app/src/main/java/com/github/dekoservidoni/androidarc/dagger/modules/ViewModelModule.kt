@@ -5,7 +5,7 @@ import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import com.github.dekoservidoni.androidarc.dagger.AppViewModelFactory
 import com.github.dekoservidoni.androidarc.dagger.ViewModelKey
-import com.github.dekoservidoni.androidarc.viewmodels.DrinkViewModel
+import com.github.dekoservidoni.androidarc.viewmodels.SearchViewModel
 import dagger.multibindings.IntoMap
 import dagger.Binds
 
@@ -15,8 +15,8 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(DrinkViewModel::class)
-    internal abstract fun bindDrinkViewModel(drinkViewModel: DrinkViewModel): ViewModel
+    @ViewModelKey(SearchViewModel::class)
+    internal abstract fun bindDrinkViewModel(searchViewModel: SearchViewModel): ViewModel
 
     @Binds
     internal abstract fun bindAppViewModelFactory(appViewModelFactory: AppViewModelFactory): ViewModelProvider.Factory

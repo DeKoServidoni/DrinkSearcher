@@ -3,10 +3,10 @@ package com.github.dekoservidoni.androidarc.view.adapters
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.bumptech.glide.Glide
-import com.github.dekoservidoni.androidarc.R
+import com.github.dekoservidoni.androidarc.databinding.RowSearchBinding
 import com.github.dekoservidoni.androidarc.view.adapters.viewholders.SearchViewHolder
 import com.github.dekoservidoni.androidarc.datamodels.models.Drink
+import com.github.dekoservidoni.androidarc.viewmodels.SearchRowViewModel
 import java.util.*
 
 class SearchAdapter: RecyclerView.Adapter<SearchViewHolder>() {
@@ -15,21 +15,14 @@ class SearchAdapter: RecyclerView.Adapter<SearchViewHolder>() {
 
     override fun onBindViewHolder(holder: SearchViewHolder?, position: Int) {
         val drink = content[position]
-
-        val rowLabel = "%s\n%s".format(Locale.getDefault(), drink.name, drink.iba)
-        holder?.drinkName?.text = rowLabel
-
-        holder?.drinkImage.let {
-            Glide.with(holder?.drinkImage?.context)
-                    .load(drink.thumb)
-                    .into(holder?.drinkImage)
-        }
-
+        val viewModel = SearchRowViewModel(drink)
+        holder?.bindingContent(viewModel)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): SearchViewHolder {
-        val rootView = LayoutInflater.from(parent?.context).inflate(R.layout.row_search, parent, false)
-        return SearchViewHolder(rootView)
+        val layoutInflater = LayoutInflater.from(parent?.context)
+        val binding = RowSearchBinding.inflate(layoutInflater, parent, false)
+        return SearchViewHolder(binding.root, binding)
     }
 
     override fun getItemCount(): Int {
@@ -41,11 +34,6 @@ class SearchAdapter: RecyclerView.Adapter<SearchViewHolder>() {
     fun updateContent(newData: List<Drink>) {
         content.clear()
         content.addAll(newData)
-        notifyDataSetChanged()
-    }
-
-    fun clearContent() {
-        content.clear()
         notifyDataSetChanged()
     }
 }
