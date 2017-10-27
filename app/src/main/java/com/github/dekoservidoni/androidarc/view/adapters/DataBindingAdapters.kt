@@ -20,8 +20,15 @@ object DataBindingAdapters {
 
     @JvmStatic
     @BindingAdapter("search_list")
-    fun setContentList(recyclerView: RecyclerView, newContent: List<Drink>) {
+    fun setSearchList(recyclerView: RecyclerView, newContent: List<Drink>) {
         val adapter = recyclerView.adapter as SearchAdapter
+        adapter.updateContent(newContent)
+    }
+
+    @JvmStatic
+    @BindingAdapter("favorite_list")
+    fun setFavoriteList(recyclerView: RecyclerView, newContent: List<Drink>) {
+        val adapter = recyclerView.adapter as FavoriteAdapter
         adapter.updateContent(newContent)
     }
 }

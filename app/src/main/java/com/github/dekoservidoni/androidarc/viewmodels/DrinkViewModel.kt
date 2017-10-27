@@ -13,7 +13,7 @@ import com.github.dekoservidoni.androidarc.datamodels.models.Resource
 import com.github.dekoservidoni.androidarc.datamodels.models.ResponseDrink
 import javax.inject.Inject
 
-class SearchViewModel @Inject constructor(): ObservableViewModel(),
+class DrinkViewModel @Inject constructor(): ObservableViewModel(),
         Observer<Resource<ResponseDrink>>, LifecycleObserver {
 
     @Inject

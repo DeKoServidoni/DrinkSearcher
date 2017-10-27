@@ -18,7 +18,7 @@ import android.widget.TextView
 import com.github.dekoservidoni.androidarc.R
 import com.github.dekoservidoni.androidarc.databinding.FragmentSearchBinding
 import com.github.dekoservidoni.androidarc.view.adapters.SearchAdapter
-import com.github.dekoservidoni.androidarc.viewmodels.SearchViewModel
+import com.github.dekoservidoni.androidarc.viewmodels.DrinkViewModel
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
@@ -29,8 +29,8 @@ class SearchFragment : Fragment(), TextView.OnEditorActionListener  {
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private val dividerItemDecoration by lazy { DividerItemDecoration(context, LinearLayoutManager.HORIZONTAL) }
-    private val searchResultsAdapter by lazy { SearchAdapter() }
-    private val drinkViewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(SearchViewModel::class.java) }
+    private val searchAdapter by lazy { SearchAdapter() }
+    private val drinkViewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(DrinkViewModel::class.java) }
 
     private lateinit var fragmentSearchBinding: FragmentSearchBinding
 
@@ -50,7 +50,7 @@ class SearchFragment : Fragment(), TextView.OnEditorActionListener  {
 
         fragmentSearchBinding.searchResults.addItemDecoration(dividerItemDecoration)
         fragmentSearchBinding.searchResults.layoutManager = LinearLayoutManager(context)
-        fragmentSearchBinding.searchResults.adapter = searchResultsAdapter
+        fragmentSearchBinding.searchResults.adapter = searchAdapter
         fragmentSearchBinding.searchInput.setOnEditorActionListener(this)
 
         fragmentSearchBinding.viewModel = drinkViewModel
@@ -61,6 +61,11 @@ class SearchFragment : Fragment(), TextView.OnEditorActionListener  {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         lifecycle.addObserver(drinkViewModel)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        lifecycle.removeObserver(drinkViewModel)
     }
 
     override fun onEditorAction(textInput: TextView?, actionId: Int, p2: KeyEvent?): Boolean {

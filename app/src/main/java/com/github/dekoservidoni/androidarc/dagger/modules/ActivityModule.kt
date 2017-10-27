@@ -1,6 +1,6 @@
 package com.github.dekoservidoni.androidarc.dagger.modules
 
-import com.github.dekoservidoni.androidarc.view.activities.HomeActivity
+import com.github.dekoservidoni.androidarc.view.activities.MainActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -9,5 +9,5 @@ import dagger.android.ContributesAndroidInjector
 abstract class ActivityModule {
 
     @ContributesAndroidInjector(modules = arrayOf(FragmentModule::class))
-    abstract fun bindHomeActivity(): HomeActivity
+    abstract fun bindMainActivity(): MainActivity
 }
