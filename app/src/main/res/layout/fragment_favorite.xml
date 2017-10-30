@@ -14,7 +14,7 @@
         android:layout_height="match_parent">
 
         <ProgressBar
-            android:id="@+id/search_progress"
+            android:id="@+id/favorite_progress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="@{viewModel.loadingVisibility}"
@@ -24,7 +24,7 @@
             app:layout_constraintBottom_toBottomOf="parent"/>
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/search_results"
+            android:id="@+id/favorite_results"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:visibility="@{viewModel.contentVisibility}"
@@ -34,7 +34,7 @@
             app:layout_constraintBottom_toBottomOf="parent"/>
 
         <TextView
-            android:id="@+id/search_empty"
+            android:id="@+id/favorite_empty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="@{viewModel.errorVisibility}"

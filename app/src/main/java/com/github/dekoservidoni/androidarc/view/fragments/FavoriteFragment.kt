@@ -1,5 +1,6 @@
 package com.github.dekoservidoni.androidarc.view.fragments
 
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
@@ -13,21 +14,16 @@ import android.view.View
 import android.view.ViewGroup
 import com.github.dekoservidoni.androidarc.R
 import com.github.dekoservidoni.androidarc.databinding.FragmentFavoriteBinding
+import com.github.dekoservidoni.androidarc.datamodels.models.Drink
 import com.github.dekoservidoni.androidarc.view.adapters.FavoriteAdapter
 import com.github.dekoservidoni.androidarc.viewmodels.DrinkViewModel
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
-class FavoriteFragment : Fragment() {
+class FavoriteFragment : BaseFragment(), Observer<List<Drink>> {
 
     private lateinit var fragmentFavoriteBinding: FragmentFavoriteBinding
-
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-
-    private val dividerItemDecoration by lazy { DividerItemDecoration(context, LinearLayoutManager.HORIZONTAL) }
     private val favoritesResultAdapter by lazy { FavoriteAdapter() }
-    private val drinkViewModel by lazy { ViewModelProviders.of(this, viewModelFactory).get(DrinkViewModel::class.java) }
 
     companion object {
         fun newInstance(): FavoriteFragment {
@@ -42,23 +38,30 @@ class FavoriteFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         fragmentFavoriteBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_favorite, container, false)
-
-        fragmentFavoriteBinding.searchResults.addItemDecoration(dividerItemDecoration)
-        fragmentFavoriteBinding.searchResults.layoutManager = LinearLayoutManager(context)
-        fragmentFavoriteBinding.searchResults.adapter = favoritesResultAdapter
-
         fragmentFavoriteBinding.viewModel = drinkViewModel
+
+        setupUI()
 
         return fragmentFavoriteBinding.root
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        lifecycle.addObserver(drinkViewModel)
+        drinkViewModel.getData().observe(this, this)
+        drinkViewModel.load()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        lifecycle.removeObserver(drinkViewModel)
+    override fun onChanged(newContent: List<Drink>?) {
+        newContent?.let {
+            favoritesResultAdapter.updateContent(it)
+        }
+    }
+
+    /// Private methods
+
+    override fun setupUI() {
+        fragmentFavoriteBinding.favoriteResults.addItemDecoration(dividerItemDecoration)
+        fragmentFavoriteBinding.favoriteResults.layoutManager = LinearLayoutManager(context)
+        fragmentFavoriteBinding.favoriteResults.adapter = favoritesResultAdapter
     }
 }

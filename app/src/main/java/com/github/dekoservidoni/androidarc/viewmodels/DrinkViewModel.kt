@@ -6,16 +6,16 @@ import android.databinding.ObservableInt
 import android.view.View
 import com.github.dekoservidoni.androidarc.BR
 import com.github.dekoservidoni.androidarc.datamodels.LoadStatus
-import com.github.dekoservidoni.androidarc.datamodels.RepositoryDataModel
+import com.github.dekoservidoni.androidarc.datamodels.DrinkDataModel
 import com.github.dekoservidoni.androidarc.datamodels.models.Drink
 import com.github.dekoservidoni.androidarc.datamodels.models.Resource
 import com.github.dekoservidoni.androidarc.datamodels.models.ResponseDrink
 import javax.inject.Inject
 
-class DrinkViewModel @Inject constructor(): BaseViewModel(), LifecycleObserver {
+class DrinkViewModel @Inject constructor(): BaseViewModel() {
 
     @Inject
-    lateinit var dataModel: RepositoryDataModel
+    lateinit var dataModel: DrinkDataModel
 
     @Bindable
     var errorMessage = ""
@@ -48,8 +48,12 @@ class DrinkViewModel @Inject constructor(): BaseViewModel(), LifecycleObserver {
         showLoading(true)
         showContent(false)
 
-        //TODO: ROOM
-        //dataModel.getDataFromDatabase()
+        data.addSource(dataModel.getDataFromDatabase(), {
+            it?.let {
+                refreshUI(it)
+                data.value = it.data?.drinks
+            }
+        })
     }
 
     private fun refreshUI(newValue: Resource<ResponseDrink>?) {
@@ -70,11 +74,7 @@ class DrinkViewModel @Inject constructor(): BaseViewModel(), LifecycleObserver {
                 showContent(true)
             }
 
-            LoadStatus.IDLE -> {
-                // do nothing
-            }
-
-            LoadStatus.LOADING -> {
+            else -> {
                 // do nothing
             }
         }

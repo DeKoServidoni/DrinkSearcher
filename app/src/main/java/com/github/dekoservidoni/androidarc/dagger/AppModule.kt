@@ -2,7 +2,7 @@ package com.github.dekoservidoni.androidarc.dagger
 
 import android.content.Context
 import com.github.dekoservidoni.androidarc.BaseApp
-import com.github.dekoservidoni.androidarc.datamodels.RepositoryDataModel
+import com.github.dekoservidoni.androidarc.datamodels.DrinkDataModel
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -17,7 +17,7 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideRepositoryDataModel(): RepositoryDataModel {
-        return RepositoryDataModel()
+    fun provideDrinkDataModel(): DrinkDataModel {
+        return DrinkDataModel()
     }
 }

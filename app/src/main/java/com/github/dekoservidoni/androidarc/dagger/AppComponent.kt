@@ -3,6 +3,7 @@ package com.github.dekoservidoni.androidarc.dagger
 import android.app.Application
 import com.github.dekoservidoni.androidarc.BaseApp
 import com.github.dekoservidoni.androidarc.dagger.modules.ActivityModule
+import com.github.dekoservidoni.androidarc.dagger.modules.RoomModule
 import com.github.dekoservidoni.androidarc.dagger.modules.ViewModelModule
 import dagger.BindsInstance
 import dagger.Component
@@ -13,6 +14,7 @@ import javax.inject.Singleton
 @Component(modules = arrayOf(AndroidInjectionModule::class,
             AppModule::class,
             ActivityModule::class,
+            RoomModule::class,
             ViewModelModule::class))
 interface AppComponent {
 
