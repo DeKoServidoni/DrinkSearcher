@@ -1,8 +1,9 @@
 package com.github.dekoservidoni.androidarc.datamodels
 
 import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MediatorLiveData
 import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.Transformations
+import android.os.AsyncTask
 import com.github.dekoservidoni.androidarc.datamodels.database.DrinkDao
 import com.github.dekoservidoni.androidarc.datamodels.models.Drink
 import com.github.dekoservidoni.androidarc.datamodels.models.Resource
@@ -14,14 +15,18 @@ import retrofit2.Response
 import javax.inject.Inject
 
 
-class DrinkDataModel @Inject constructor(var drinkDao: DrinkDao, var networkClient: NetworkClient) {
+class DrinkDataModel @Inject constructor(private var drinkDao: DrinkDao,
+                                         private var networkClient: NetworkClient) {
+
+    companion object {
+        val INSERT = 1
+        val DELETE = 2
+    }
 
     /// Network
 
     fun getDataFromAPI(term: String): LiveData<Resource<ResponseDrink>> {
         val data = MutableLiveData<Resource<ResponseDrink>>()
-
-        Resource.loading<List<Drink>>()
 
         networkClient.searchDrinks(term).enqueue(object : Callback<ResponseDrink> {
             override fun onResponse(call: Call<ResponseDrink>, response: Response<ResponseDrink>) {
@@ -46,9 +51,9 @@ class DrinkDataModel @Inject constructor(var drinkDao: DrinkDao, var networkClie
     /// DatabaseClient
 
     fun getDataFromDatabase(): LiveData<Resource<ResponseDrink>> {
-        val data = MutableLiveData<Resource<ResponseDrink>>()
+        val data = MediatorLiveData<Resource<ResponseDrink>>()
 
-        Transformations.map(drinkDao.getAll(), {
+        data.addSource(drinkDao.getAll(), {
             it?.let {
                 if(it.isEmpty()) {
                     data.value = Resource.error("You have no favorites yet!", null)
@@ -62,10 +67,26 @@ class DrinkDataModel @Inject constructor(var drinkDao: DrinkDao, var networkClie
     }
 
     fun addFavorite(drink: Drink) {
-//        repository.drinkDao.insert(drink)
+        DBTask(drinkDao, drink).execute(INSERT)
     }
 
     fun removeFavorite(drink:Drink) {
-//        repository.drinkDao.delete(drink)
+        DBTask(drinkDao, drink).execute(DELETE)
+    }
+
+    /// Internal class
+
+    internal class DBTask constructor(private val dao: DrinkDao, private val drink: Drink)
+        : AsyncTask<Int,Void,Void>() {
+
+        override fun doInBackground(vararg type: Int?): Void? {
+            type.let {
+                when(it[0]) {
+                    INSERT -> dao.insert(drink)
+                    DELETE -> dao.delete(drink)
+                }
+            }
+            return null
+        }
     }
 }

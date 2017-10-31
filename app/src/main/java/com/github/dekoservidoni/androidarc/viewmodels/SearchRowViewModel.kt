@@ -3,7 +3,7 @@ package com.github.dekoservidoni.androidarc.viewmodels
 import com.github.dekoservidoni.androidarc.datamodels.models.Drink
 import java.util.*
 
-class SearchRowViewModel(private var drink: Drink) : BaseViewModel() {
+class SearchRowViewModel(var drink: Drink) : BaseViewModel() {
 
     fun getRowDescription(): String {
         drink.iba?.let {

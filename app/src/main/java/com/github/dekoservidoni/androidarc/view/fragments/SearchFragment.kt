@@ -18,7 +18,7 @@ import com.github.dekoservidoni.androidarc.view.adapters.SearchAdapter
 
 class SearchFragment : BaseFragment(), TextView.OnEditorActionListener, Observer<List<Drink>>  {
 
-    private val searchAdapter by lazy { SearchAdapter() }
+    private val searchAdapter by lazy { SearchAdapter(drinkViewModel) }
     private lateinit var fragmentSearchBinding: FragmentSearchBinding
 
     companion object {

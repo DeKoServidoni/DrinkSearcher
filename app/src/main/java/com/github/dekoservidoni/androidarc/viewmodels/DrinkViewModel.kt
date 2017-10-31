@@ -12,7 +12,7 @@ import com.github.dekoservidoni.androidarc.datamodels.models.Resource
 import com.github.dekoservidoni.androidarc.datamodels.models.ResponseDrink
 import javax.inject.Inject
 
-class DrinkViewModel @Inject constructor(var dataModel: DrinkDataModel): BaseViewModel() {
+class DrinkViewModel @Inject constructor(private var dataModel: DrinkDataModel): BaseViewModel() {
 
     @Bindable
     var errorMessage = ""
@@ -23,11 +23,14 @@ class DrinkViewModel @Inject constructor(var dataModel: DrinkDataModel): BaseVie
 
     private var data = MediatorLiveData<List<Drink>>()
 
-
     /// Public methods
 
     fun getData(): LiveData<List<Drink>> {
         return data
+    }
+
+    fun addToDatabase(drink: Drink) {
+        dataModel.addFavorite(drink)
     }
 
     fun search(term: String) {
