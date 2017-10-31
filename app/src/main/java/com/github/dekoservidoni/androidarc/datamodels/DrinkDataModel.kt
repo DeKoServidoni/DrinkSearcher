@@ -1,7 +1,6 @@
 package com.github.dekoservidoni.androidarc.datamodels
 
 import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MediatorLiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Transformations
 import com.github.dekoservidoni.androidarc.datamodels.database.DrinkDao
@@ -15,10 +14,7 @@ import retrofit2.Response
 import javax.inject.Inject
 
 
-class DrinkDataModel @Inject constructor() {
-
-    @Inject
-    lateinit var drinkDao: DrinkDao
+class DrinkDataModel @Inject constructor(var drinkDao: DrinkDao, var networkClient: NetworkClient) {
 
     /// Network
 
@@ -27,7 +23,7 @@ class DrinkDataModel @Inject constructor() {
 
         Resource.loading<List<Drink>>()
 
-        NetworkClient.getServices()?.searchDrinks(term)?.enqueue(object : Callback<ResponseDrink> {
+        networkClient.searchDrinks(term).enqueue(object : Callback<ResponseDrink> {
             override fun onResponse(call: Call<ResponseDrink>, response: Response<ResponseDrink>) {
                 val callResponse = response.body()
 
@@ -47,7 +43,7 @@ class DrinkDataModel @Inject constructor() {
         return data
     }
 
-    /// Database
+    /// DatabaseClient
 
     fun getDataFromDatabase(): LiveData<Resource<ResponseDrink>> {
         val data = MutableLiveData<Resource<ResponseDrink>>()
@@ -66,10 +62,10 @@ class DrinkDataModel @Inject constructor() {
     }
 
     fun addFavorite(drink: Drink) {
-        drinkDao.insert(drink)
+//        repository.drinkDao.insert(drink)
     }
 
     fun removeFavorite(drink:Drink) {
-        drinkDao.delete(drink)
+//        repository.drinkDao.delete(drink)
     }
 }

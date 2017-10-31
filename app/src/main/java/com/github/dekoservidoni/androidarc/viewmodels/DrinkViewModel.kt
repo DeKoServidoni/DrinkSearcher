@@ -12,10 +12,7 @@ import com.github.dekoservidoni.androidarc.datamodels.models.Resource
 import com.github.dekoservidoni.androidarc.datamodels.models.ResponseDrink
 import javax.inject.Inject
 
-class DrinkViewModel @Inject constructor(): BaseViewModel() {
-
-    @Inject
-    lateinit var dataModel: DrinkDataModel
+class DrinkViewModel @Inject constructor(var dataModel: DrinkDataModel): BaseViewModel() {
 
     @Bindable
     var errorMessage = ""
@@ -25,6 +22,7 @@ class DrinkViewModel @Inject constructor(): BaseViewModel() {
     val contentVisibility = ObservableInt(View.GONE)
 
     private var data = MediatorLiveData<List<Drink>>()
+
 
     /// Public methods
 
