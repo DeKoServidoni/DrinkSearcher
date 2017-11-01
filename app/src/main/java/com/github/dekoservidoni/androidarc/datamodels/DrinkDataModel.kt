@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MediatorLiveData
 import android.arch.lifecycle.MutableLiveData
 import android.os.AsyncTask
+import com.github.dekoservidoni.androidarc.BaseApp
 import com.github.dekoservidoni.androidarc.datamodels.database.DrinkDao
 import com.github.dekoservidoni.androidarc.datamodels.models.Drink
 import com.github.dekoservidoni.androidarc.datamodels.models.Resource
@@ -58,6 +59,11 @@ class DrinkDataModel @Inject constructor(private var drinkDao: DrinkDao,
                 if(it.isEmpty()) {
                     data.value = Resource.error("You have no favorites yet!", null)
                 } else {
+
+                    for (drink in it) {
+                        BaseApp.favoriteIds.add(drink.id)
+                    }
+
                     data.value = Resource.success(ResponseDrink(it))
                 }
             }

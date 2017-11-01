@@ -36,15 +36,10 @@ class SearchFragment : BaseFragment(), TextView.OnEditorActionListener, Observer
         return fragmentSearchBinding.root
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        drinkViewModel.getData().observe(this, this)
-    }
-
     override fun onEditorAction(textInput: TextView?, actionId: Int, p2: KeyEvent?): Boolean {
         if (actionId == EditorInfo.IME_ACTION_SEARCH) {
             dismissKeyboard(fragmentSearchBinding.searchInput)
-            drinkViewModel.search(textInput?.text.toString())
+            drinkViewModel.search(textInput?.text.toString()).observe(this, this)
         }
         return true
     }

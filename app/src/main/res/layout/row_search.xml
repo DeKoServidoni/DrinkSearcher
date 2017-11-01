@@ -84,12 +84,12 @@
                 android:paddingBottom="10dp"
                 android:paddingStart="10dp"
                 android:paddingEnd="0dp"
-                android:src="@drawable/ic_favorite_add"
+                app:favorite_icon="@{viewModel.favoriteIcon}"
                 android:onClick="@{() -> listener.onUserAction(viewModel.drink)}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/drink_label"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
         </android.support.constraint.ConstraintLayout>
 

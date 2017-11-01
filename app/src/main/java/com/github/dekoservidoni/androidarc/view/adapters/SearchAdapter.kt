@@ -1,5 +1,6 @@
 package com.github.dekoservidoni.androidarc.view.adapters
 
+import com.github.dekoservidoni.androidarc.BaseApp
 import com.github.dekoservidoni.androidarc.R
 import com.github.dekoservidoni.androidarc.databinding.RowSearchBinding
 import com.github.dekoservidoni.androidarc.datamodels.models.Drink
@@ -12,13 +13,18 @@ class SearchAdapter constructor(private val drinkViewModel: DrinkViewModel)
 
     override fun bind(holder: DataBindViewHolder<RowSearchBinding>, position: Int) {
         val drink = content[position]
-        holder.binding.viewModel = SearchRowViewModel(drink)
+        holder.binding.viewModel = SearchRowViewModel(drink, BaseApp.favoriteIds)
         holder.binding.listener = object : DrinkActionListener {
             override fun onUserAction(drink: Drink) {
-                drinkViewModel.addToDatabase(drink)
+                if(!drink.isFavorite) {
+                    drinkViewModel.addToFavorites(drink)
+                    holder.binding.viewModel?.favoriteDrink(true)
+                } else {
+                    drinkViewModel.removeFromFavorites(drink)
+                    holder.binding.viewModel?.favoriteDrink(false)
+                }
             }
         }
-
         holder.binding.executePendingBindings()
     }
 

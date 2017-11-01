@@ -21,19 +21,19 @@ class DrinkViewModel @Inject constructor(private var dataModel: DrinkDataModel):
     val loadingVisibility = ObservableInt(View.GONE)
     val contentVisibility = ObservableInt(View.GONE)
 
-    private var data = MediatorLiveData<List<Drink>>()
-
     /// Public methods
 
-    fun getData(): LiveData<List<Drink>> {
-        return data
-    }
-
-    fun addToDatabase(drink: Drink) {
+    fun addToFavorites(drink: Drink) {
         dataModel.addFavorite(drink)
     }
 
-    fun search(term: String) {
+    fun removeFromFavorites(drink: Drink) {
+        dataModel.removeFavorite(drink)
+    }
+
+    fun search(term: String): LiveData<List<Drink>> {
+        val data = MediatorLiveData<List<Drink>>()
+
         showLoading(true)
         showContent(false)
 
@@ -43,9 +43,13 @@ class DrinkViewModel @Inject constructor(private var dataModel: DrinkDataModel):
                 data.value = it.data?.drinks
             }
         })
+
+        return data
     }
 
-    fun load() {
+    fun load(): LiveData<List<Drink>> {
+        val data = MediatorLiveData<List<Drink>>()
+
         showLoading(true)
         showContent(false)
 
@@ -55,6 +59,8 @@ class DrinkViewModel @Inject constructor(private var dataModel: DrinkDataModel):
                 data.value = it.data?.drinks
             }
         })
+
+        return data
     }
 
     private fun refreshUI(newValue: Resource<ResponseDrink>?) {

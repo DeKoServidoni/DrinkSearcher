@@ -10,6 +10,10 @@ import javax.inject.Inject
 
 class BaseApp: Application(), HasActivityInjector {
 
+    companion object {
+        var favoriteIds = ArrayList<String>()
+    }
+
     @Inject
     internal lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
 

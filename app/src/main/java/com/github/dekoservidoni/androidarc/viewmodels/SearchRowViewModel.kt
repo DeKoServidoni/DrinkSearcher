@@ -1,9 +1,16 @@
 package com.github.dekoservidoni.androidarc.viewmodels
 
+import android.databinding.Bindable
+import com.github.dekoservidoni.androidarc.BR
+import com.github.dekoservidoni.androidarc.R
 import com.github.dekoservidoni.androidarc.datamodels.models.Drink
 import java.util.*
 
-class SearchRowViewModel(var drink: Drink) : BaseViewModel() {
+class SearchRowViewModel(var drink: Drink, favorites: ArrayList<String>) : BaseViewModel() {
+
+    init {
+        drink.isFavorite = favorites.contains(drink.id)
+    }
 
     fun getRowDescription(): String {
         drink.iba?.let {
@@ -19,5 +26,15 @@ class SearchRowViewModel(var drink: Drink) : BaseViewModel() {
         }
 
         return ""
+    }
+
+    @Bindable
+    fun getFavoriteIcon(): Int {
+        return if(drink.isFavorite) R.drawable.ic_favorited else R.drawable.ic_favorite_add
+    }
+
+    fun favoriteDrink(favorite: Boolean) {
+        drink.isFavorite = favorite
+        notifyPropertyChanged(BR.favoriteIcon)
     }
 }

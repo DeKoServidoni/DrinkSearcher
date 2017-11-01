@@ -2,6 +2,7 @@ package com.github.dekoservidoni.androidarc.datamodels.models
 
 import android.arch.persistence.room.ColumnInfo
 import android.arch.persistence.room.Entity
+import android.arch.persistence.room.Ignore
 import android.arch.persistence.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import io.reactivex.annotations.NonNull
@@ -45,4 +46,7 @@ data class Drink(
 
         @ColumnInfo(name = "drink_thumb")
         @SerializedName("strDrinkThumb")
-        var thumb: String? = null)
+        var thumb: String? = null,
+
+        @Ignore
+        var isFavorite: Boolean = false)

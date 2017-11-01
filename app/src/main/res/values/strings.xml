@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Drink Searcher</string>
+    <string name="app_name">DrinkSearcher</string>
     <string name="search_hint">Enter the drink name here!</string>
     <string name="search_empty">Drink not found! :(</string>
     <string name="tab_text_1">Search For Drinks</string>
