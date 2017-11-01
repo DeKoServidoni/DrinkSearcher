@@ -14,5 +14,5 @@ The architecure used for this application can be found in the following diagram.
 
 ## Download sample
 
-You can download the at play store!<br>
+You can download it at play store!<br>
 <a href="https://play.google.com/store/apps/details?id=com.github.dekoservidoni.androidarc"><img src="/google-play-badge.png" width="200"></a>
