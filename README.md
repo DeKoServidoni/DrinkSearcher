@@ -2,8 +2,6 @@
 
 # DrinkSearcher
 
-<a href="https://play.google.com/store/apps/details?id=com.github.dekoservidoni.androidarc"><img src="/google-play-badge.png" width="200"></a>
-
 Sample app to show how to use the new android architecture components with DataBinding and dagger: 
 * **LiveData** 
 * **ROOM**
@@ -13,3 +11,8 @@ API used for this sample was http://www.thecocktaildb.com/, an open, crowd-sourc
 The architecure used for this application can be found in the following diagram.
 
 ![Architecture](/android_arch.png)
+
+## Download sample
+
+You can download the at play store!<br>
+<a href="https://play.google.com/store/apps/details?id=com.github.dekoservidoni.androidarc"><img src="/google-play-badge.png" width="200"></a>
