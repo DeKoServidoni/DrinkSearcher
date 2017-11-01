@@ -2,7 +2,7 @@
 
 # DrinkSearcher
 
-<a href="html_images.asp"><img src="/google-play-badge.png" width="200"></a>
+<a href="https://play.google.com/store/apps/details?id=com.github.dekoservidoni.androidarc"><img src="/google-play-badge.png" width="200"></a>
 
 Sample app to show how to use the new android architecture components with DataBinding and dagger: 
 * **LiveData** 
