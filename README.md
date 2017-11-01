@@ -1,6 +1,8 @@
-![Architecture](/android_icon.png)
+![Icon](/android_icon.png)
 
 # DrinkSearcher
+
+<a href="html_images.asp"><img src="/google-play-badge.png" width="200"></a>
 
 Sample app to show how to use the new android architecture components with DataBinding and dagger: 
 * **LiveData** 
